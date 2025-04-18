@@ -118,4 +118,82 @@ This API provides basic user registration, login, and profile retrieval function
   "name": " ",
   "role":" "
 }
+* **POST /auth/login**: Logs in an existing user and returns a JWT (JSON Web Token) for authentication.
+    * **Request Body (application/json):**
+        ```json
+        {
+          "email": "abc@gmail.com",
+          "name":"abc"
+          "password": "password"
+        }
+        ```
+    * **Response (application/json) - Success (HTTP 200 OK):**
+        ```json
+        {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflRzFWEXO2EOKJW-lJSeyKKDxxSUcQLM64_Z9ayhQY"
+        }
+        ```
+    * **Response (application/json) - Error (e.g., HTTP 401 Unauthorized, 400 Bad Request):**
+        ```json
+        {
+          "statusCode": 401,
+          "message": "Invalid credentials",
+          "error": "Unauthorized"
+        }
+* **GET /me**: Retrieves the profile details of the currently authenticated user. Requires a valid JWT in the `Authorization` header (Bearer token).
+    * **Request Headers:**
+        ```
+        Authorization: Bearer <your_jwt_token>
+        ```
+    * **Response (application/json) - Success (HTTP 200 OK):**
+        ```json
+        {
+          "id": 1,
+          "email": "abc@gmail.com",
+          "name": "abc",
+          "created_at": "2025-04-18T14:25:00.000Z",
+          "updated_at": "2025-04-18T14:25:00.000Z"
+          // ... other user profile information
+        }
+        ```
+    * **Response (application/json) - Error (e.g., HTTP 401 Unauthorized):**
+        ```json
+        {
+          "statusCode": 401,
+          "message": "Unauthorized",
+          "error": "Unauthorized"
+        }
+        ```
+### Photo Management
 
+* **POST /photos/upload**: Uploads a photo with an optional caption. Requires a valid JWT in the `Authorization` header (Bearer token).
+    * **Request Headers:**
+        ```
+        Authorization: Bearer <your_jwt_token>
+        Content-Type: multipart/form-data
+        ```
+    * **Request Body (form-data):**
+        * `image`: The image file to upload.
+        * `caption` (optional): A string describing the photo.
+    * **Response (application/json) - Success (HTTP 201 Created):**
+        ```json
+        {
+          "id": "unique_photo_id",
+          "filename": "image.jpg",
+          "size": 12345,
+          "path": "/uploads/user_id/image.jpg",
+          "caption": "My awesome photo",
+          "userId": 1,
+          "uploadedAt": "2025-04-18T14:25:00.000Z"
+        }
+        ```
+    * **Response (application/json) - Error (e.g., HTTP 400 Bad Request, 401 Unauthorized):**
+        ```json
+        {
+          "statusCode": 400,
+          "message": "Invalid file format" | "Caption too long",
+          "error": "Bad Request"
+        }
+        ```
+
+        ```
