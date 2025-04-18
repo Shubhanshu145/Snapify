@@ -96,3 +96,26 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+# Authentication API
+
+This API provides basic user registration, login, and profile retrieval functionalities.
+
+## Endpoints
+
+### POST /auth/register
+
+**Description:** Registers a new user.
+
+**Request Body (application/json):**
+
+```json
+{
+  "email": "abc@gmail.com",
+  "password": "password",
+  "name": " ",
+  "role":" "
+}
+
